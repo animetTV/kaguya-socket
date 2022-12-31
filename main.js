@@ -13,17 +13,18 @@ const io = new Server(server, {
   cors: {
     origin: [
       "http://localhost:3000",
-      "https://kaguya.live",
-      "https://www.kaguya.live",
+      "https://v3.animet.tv",
+      "https://animet.tv",
     ],
   },
   path: `/${process.env.BASE_ROUTE}/socket.io`,
 });
 
+console.log(process.env.BASE_ROUTE);
 const PORT = process.env.PORT || 3002;
 
-// 30 minutes ms
-const ROOM_DELETE_TIME = 30 * 60 * 1000;
+// 5 minutes ms
+const ROOM_DELETE_TIME = 5 * 60 * 1000;
 
 const updateEpisode = async (roomId, episode) => {
   const { data, error } = await supabase
