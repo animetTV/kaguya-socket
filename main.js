@@ -13,7 +13,7 @@ const io = new Server(server, {
   cors: {
     origin: [
       "http://localhost:3000",
-      "https://v3.animet.tv",
+      "https://v3.animet.tv/",
       "https://animet.tv",
     ],
   },
