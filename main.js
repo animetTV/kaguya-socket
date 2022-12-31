@@ -9,13 +9,20 @@ const redisClient = createRedisClient({
   url: process.env.REDIS_URL,
 });
 const server = http.createServer();
-const io = new Server(server, {
+/* const io = new Server(server, {
   cors: {
     origin: [
       "http://localhost:3000",
       "https://v3.animet.tv/",
       "https://animet.tv",
     ],
+  },
+  path: `/${process.env.BASE_ROUTE}/socket.io`,
+}); */
+
+const io = new Server(server, {
+  cors: {
+    origin: '*'
   },
   path: `/${process.env.BASE_ROUTE}/socket.io`,
 });
