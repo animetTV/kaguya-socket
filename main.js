@@ -8,30 +8,37 @@ import { createClient as createRedisClient } from "redis";
 const redisClient = createRedisClient({
   url: process.env.REDIS_URL,
 });
-const server = http.createServer();
-/* const io = new Server(server, {
-  cors: {
-    origin: [
-      "http://localhost:3000",
-      "https://v3.animet.tv/",
-      "https://animet.tv",
-    ],
-  },
-  path: `/${process.env.BASE_ROUTE}/socket.io`,
-}); */
+const server = http.createServer((req, res) => {
+  if (req.url === '/') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end("🚀 AnimetTV Socket Server Online!")
+  }
+});
 
 const io = new Server(server, {
   cors: {
-    origin: '*'
+    origin: [
+      "https://animet.site",
+      "https://backup-server.animet.site"
+    ],
   },
   path: `/${process.env.BASE_ROUTE}/socket.io`,
 });
 
+
+
+/* const io = new Server(server, {
+  cors: {
+    origin: '*'
+  },
+  path: `/${process.env.BASE_ROUTE}/socket.io`,
+}); */
+
 console.log(process.env.BASE_ROUTE);
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 3004;
 
 // 5 minutes ms
-const ROOM_DELETE_TIME = 5 * 60 * 1000;
+const ROOM_DELETE_TIME = 5000;
 
 const updateEpisode = async (roomId, episode) => {
   const { data, error } = await supabase
@@ -220,6 +227,7 @@ io.on("connection", (socket) => {
     });
 
     socket.on("disconnect", async () => {
+      console.log('user disconnected');
       const sockets = await io.in(roomId.toString()).fetchSockets();
 
       console.log(`${userName} left room ${roomId}`);
